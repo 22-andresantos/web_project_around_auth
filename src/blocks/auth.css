@@ -1,0 +1,32 @@
+.auth {
+  max-width: 358px;
+  margin: 60px auto;
+}
+
+.auth__title {
+  color: white;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.auth__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth__input {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  color: white;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+.auth__button {
+  margin-top: 180px;
+  height: 50px;
+  background: white;
+  border: none;
+  cursor: pointer;
+}
