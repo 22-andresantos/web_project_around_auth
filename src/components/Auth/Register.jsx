@@ -1,20 +1,16 @@
-import Header from '../Header/Header';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Header from '../Header/Header';
 
-function handleRegister({ email, password }) {
-  auth
-    .register(email, password)
-    .then((res) => {
-      if (res) {
-        // Redirecionar para a página de login ou outra página
-      }
-    })
-    .catch((err) => {
-      console.error(`Erro ao registrar usuário: ${err}`);
-    });
-}
+export default function Register({ onRegister }) {
+  const [email, setUserEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-export default function Register() {
+  function handleSubmit(e) {
+    e.preventDefault();
+    onRegister({ email, password });
+  }
+
   return (
     <>
       <Header>
@@ -23,7 +19,40 @@ export default function Register() {
         </Link>
       </Header>
 
-      {/* formulário */}
+      <section className='auth'>
+        <h2 className='auth__title'>Inscrever-se</h2>
+
+        <form className='auth__form' onSubmit={handleSubmit}>
+          <input
+            className='auth__input'
+            type='email'
+            placeholder='Email'
+            value={email}
+            onChange={(e) => setUserEmail(e.target.value)}
+            required
+          />
+
+          <input
+            className='auth__input'
+            type='password'
+            placeholder='Senha'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button type='submit' className='auth__button'>
+            Inscrever-se
+          </button>
+        </form>
+
+        <p className='auth__text'>
+          Já é um membro?{' '}
+          <Link to='/signin' className='auth__link'>
+            Faça o login aqui
+          </Link>
+        </p>
+      </section>
     </>
   );
 }

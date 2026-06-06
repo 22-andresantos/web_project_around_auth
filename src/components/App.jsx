@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+import ProtectedRoute from './ProtectedRoute/ProtectedRoute.jsx';
 
 import Header from './Header/Header.jsx';
 import Main from './Main/Main.jsx';
 import Footer from './Footer/Footer.jsx';
+
+import Login from './Auth/Login.jsx';
+import Register from './Auth/Register.jsx';
 
 import * as auth from '../utils/auth.js';
 
@@ -13,8 +20,9 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [popup, setPopup] = useState(null);
   const [cards, setCards] = useState([]);
-  // false → usuário deslogado, true  → usuário autenticado
+  const [userEmail, setUserEmail] = useState('');
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('jwt'));
+  const navigate = useNavigate();
 
   function handleOpenPopup(popup) {
     setPopup(popup);
@@ -30,6 +38,7 @@ export default function App() {
       .then((data) => {
         if (data) {
           // Redirecionar para a página de login ou outra página
+          navigate('/signin');
         }
       })
       .catch((err) => {
@@ -45,12 +54,47 @@ export default function App() {
           localStorage.setItem('jwt', data.token);
           // Redirecionar para a página principal ou outra página
           setLoggedIn(true);
+          return auth.checkToken(data.token);
         }
+      })
+      .then((userData) => {
+        setUserEmail(userData.data.email);
+        navigate('/');
       })
       .catch((err) => {
         console.error(`Erro ao fazer login: ${err}`);
       });
   }
+
+  function handleSignOut() {
+    localStorage.removeItem('jwt');
+
+    setLoggedIn(false);
+
+    setUserEmail('');
+
+    navigate('/');
+  }
+
+  // verificar o token jwt e manter o usuário logado
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+
+    if (!token) {
+      return;
+    }
+
+    auth
+      .checkToken(token)
+      .then((data) => {
+        setUserEmail(data.data.email);
+        setLoggedIn(true);
+      })
+      .catch((err) => {
+        console.error(`Erro ao verificar token: ${err}`);
+        handleSignOut();
+      });
+  }, []);
 
   // carregar dados do User
   useEffect(() => {
@@ -162,23 +206,46 @@ export default function App() {
       }}
     >
       <div className='page'>
-        <Header>
-          <div className='header__actions'>
-            <span className='header__email'>email@mail.com</span>
-            <button className='header__logout'>Sair</button>
-          </div>
-        </Header>
+        <Routes>
+          <Route path='/signin' element={<Login onLogin={handleLogin} />} />
 
-        <Main
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-          onOpenPopup={handleOpenPopup}
-          onClosePopup={handleClosePopup}
-          popup={popup}
-        />
+          <Route
+            path='/signup'
+            element={<Register onRegister={handleRegister} />}
+          />
 
-        <Footer />
+          <Route
+            path='/'
+            element={
+              <ProtectedRoute loggedIn={loggedIn}>
+                <>
+                  <Header>
+                    <div className='header__actions'>
+                      <span className='header__email'>{userEmail}</span>
+                      <button
+                        className='header__logout'
+                        onClick={handleSignOut}
+                      >
+                        Sair
+                      </button>
+                    </div>
+                  </Header>
+
+                  <Main
+                    cards={cards}
+                    onCardLike={handleCardLike}
+                    onCardDelete={handleCardDelete}
+                    onOpenPopup={handleOpenPopup}
+                    onClosePopup={handleClosePopup}
+                    popup={popup}
+                  />
+
+                  <Footer />
+                </>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       </div>
     </CurrentUserContext.Provider>
   );

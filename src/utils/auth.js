@@ -8,6 +8,7 @@ function checkResponse(res) {
   return res.json();
 }
 
+//  Registrar um novo usuário
 export function register(email, password) {
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
@@ -21,6 +22,7 @@ export function register(email, password) {
   }).then(checkResponse);
 }
 
+//  Autenticar um usuário existente
 export function authorize(email, password) {
   return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
@@ -31,5 +33,16 @@ export function authorize(email, password) {
       email,
       password,
     }),
+  }).then(checkResponse);
+}
+
+//  Verificar a validade do token JWT
+export function checkToken(token) {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
   }).then(checkResponse);
 }
