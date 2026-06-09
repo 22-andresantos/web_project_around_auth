@@ -37,6 +37,9 @@
 }
 
 .header__logout {
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 18px;
   color: #a9a9a9;
   border: none;
   background: transparent;

@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute.jsx';
 
 import Header from './Header/Header.jsx';
 import Main from './Main/Main.jsx';
 import Footer from './Footer/Footer.jsx';
+import InfoTooltip from './InfoTooltip/InfoTooltip.jsx';
 
 import Login from './Auth/Login.jsx';
 import Register from './Auth/Register.jsx';
@@ -22,30 +24,48 @@ export default function App() {
   const [cards, setCards] = useState([]);
   const [userEmail, setUserEmail] = useState('');
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('jwt'));
+  const [infoTooltip, setInfoTooltip] = useState(false);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
+  // abrir o popup
   function handleOpenPopup(popup) {
     setPopup(popup);
   }
 
+  // fechar o popup
   function handleClosePopup() {
     setPopup(null);
   }
 
+  // registrar um novo usuário
   function handleRegister({ email, password }) {
     auth
       .register(email, password)
       .then((data) => {
         if (data) {
           // Redirecionar para a página de login ou outra página
-          navigate('/signin');
+          setInfoTooltip(true);
+          setSuccess(true);
         }
       })
       .catch((err) => {
+        setSuccess(false);
+        setInfoTooltip(true);
         console.error(`Erro ao registrar usuário: ${err}`);
       });
   }
 
+  // fechar o InfoTooltip e redirecionar para a página de login
+  function handleCloseInfoTooltip() {
+    setInfoTooltip(false);
+
+    if (success) {
+      navigate('/signin');
+    }
+  }
+
+  // entrar com um usuário existente
   function handleLogin({ email, password }) {
     auth
       .authorize(email, password)
@@ -62,19 +82,20 @@ export default function App() {
         navigate('/');
       })
       .catch((err) => {
+        setSuccess(false);
+        setInfoTooltip(true);
         console.error(`Erro ao fazer login: ${err}`);
       });
   }
 
-  function handleSignOut() {
+  // sair do usuário
+  const handleSignOut = useCallback(() => {
     localStorage.removeItem('jwt');
 
     setLoggedIn(false);
 
     setUserEmail('');
-
-    navigate('/');
-  }
+  }, []);
 
   // verificar o token jwt e manter o usuário logado
   useEffect(() => {
@@ -94,7 +115,7 @@ export default function App() {
         console.error(`Erro ao verificar token: ${err}`);
         handleSignOut();
       });
-  }, []);
+  }, [handleSignOut]);
 
   // carregar dados do User
   useEffect(() => {
@@ -246,6 +267,12 @@ export default function App() {
             }
           />
         </Routes>
+
+        <InfoTooltip
+          isOpen={infoTooltip}
+          onClose={handleCloseInfoTooltip}
+          success={success}
+        />
       </div>
     </CurrentUserContext.Provider>
   );

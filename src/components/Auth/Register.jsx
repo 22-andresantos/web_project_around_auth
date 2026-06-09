@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import Header from '../Header/Header';
 
 export default function Register({ onRegister }) {
-  const [email, setUserEmail] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   function handleSubmit(e) {
     e.preventDefault();
+    console.log(email, password);
     onRegister({ email, password });
   }
 
@@ -28,7 +29,7 @@ export default function Register({ onRegister }) {
             type='email'
             placeholder='Email'
             value={email}
-            onChange={(e) => setUserEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
 

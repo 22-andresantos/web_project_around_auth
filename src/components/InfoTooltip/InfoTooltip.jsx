@@ -1,17 +1,21 @@
-import Popup from '../Popup/Popup';
+import Popup from '../Main/Popup/Popup';
 
-import successIcon from '../../images/success-icon.png';
-import failIcon from '../../images/fail-icon.png';
+import successIcon from '../../images/successIcon.png';
+import failIcon from '../../images/failIcon.png';
 
 export default function InfoTooltip({ isOpen, onClose, success }) {
   if (!isOpen) return null;
 
   return (
-    <Popup onClose={onClose}>
+    <Popup onClose={onClose} className='tooltip-popup'>
       <div className='tooltip'>
-        <img src={success ? successIcon : failIcon} alt='Status' />
+        <img
+          className='tooltip__icon'
+          src={success ? successIcon : failIcon}
+          alt='Status'
+        />
 
-        <h2>
+        <h2 className='tooltip__message'>
           {success
             ? 'Vitória! Agora você está registrado.'
             : 'Ops, algo deu errado. Tente novamente.'}
