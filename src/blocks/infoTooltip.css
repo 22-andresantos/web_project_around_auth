@@ -1,7 +1,7 @@
-.tooltip-popup {
-  padding: 0;
+.popup__content_content_tooltip {
   width: 430px;
   height: 330px;
+  padding: 0;
 }
 
 .tooltip {
@@ -29,4 +29,33 @@
   font-weight: 900;
   line-height: 100%;
   color: #000;
+}
+
+@media screen and (max-width: 680px) {
+  .popup__content_content_tooltip {
+    width: 282px;
+    height: 322px;
+  }
+
+  .tooltip {
+    width: 282px;
+    height: 322px;
+  }
+
+  .tooltip__message {
+    width: 210px;
+    height: 44px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .popup__content_content_tooltip {
+    width: 240px;
+    height: 299px;
+  }
+
+  .tooltip {
+    width: 240px;
+    height: 299px;
+  }
 }

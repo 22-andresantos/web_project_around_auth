@@ -7,7 +7,7 @@ export default function InfoTooltip({ isOpen, onClose, success }) {
   if (!isOpen) return null;
 
   return (
-    <Popup onClose={onClose} className='tooltip-popup'>
+    <Popup onClose={onClose} isTooltipPopup={true}>
       <div className='tooltip'>
         <img
           className='tooltip__icon'

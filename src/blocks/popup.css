@@ -38,7 +38,7 @@
 }
 
 .popup__title {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-size: 24px;
   font-weight: 900;
   text-align: left;
@@ -60,7 +60,7 @@
 
 .popup__input {
   border: none;
-  font-family: "Inter";
+  font-family: 'Inter';
   max-width: 358px;
   font-size: 14px;
   font-weight: 400;
@@ -94,9 +94,14 @@
 .popup__img-container {
   width: 816px;
   height: 540px;
-  background-color: #ffffff;
+  list-style: none;
   border-radius: 10px 10px 10px 10px;
-  position: relative;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   z-index: 2;
 }
 
@@ -104,7 +109,6 @@
   width: 816px;
   height: 540px;
   padding: 0;
-  margin: 0;
 }
 
 .popup__img-src {
@@ -117,7 +121,6 @@
   width: 291px;
   height: 12px;
   font-size: 12px;
-
   text-align: left;
   text-underline-position: from-font;
   color: #ffffff;
@@ -126,7 +129,7 @@
 }
 
 .popup__input-error {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-size: 12px;
   color: red;
   width: 400px;
@@ -161,20 +164,30 @@
   opacity: 60%;
 }
 
+.popup__close-img {
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
 @media screen and (max-width: 920px) {
   .popup__img-container {
-    width: 433px;
-    height: 540px;
+    width: 430px;
+    height: 360px;
   }
 
   .popup__content_content_image {
-    width: 433px;
-    height: 540px;
+    width: 430px;
+    height: 360px;
+    padding: 0;
   }
 
   .popup__img-src {
     width: 433px;
-    height: 540px;
+    height: 360px;
   }
 
   .popup__img-title {
@@ -186,6 +199,7 @@
   .popup__content {
     width: 282px;
     height: 322px;
+    padding: 34px 0 0 36px;
   }
 
   .popup__title {
@@ -219,6 +233,7 @@
   .popup__content_content_image {
     width: 282px;
     height: 322px;
+    padding: 0;
   }
 
   .popup__img-src {
@@ -235,7 +250,7 @@
   .popup__content {
     width: 240px;
     height: 299px;
-    padding: 0;
+    padding: 34px 0 0 36px;
   }
 
   .popup__title {
@@ -269,6 +284,7 @@
   .popup__content_content_image {
     width: 240px;
     height: 299px;
+    padding: 0;
   }
 
   .popup__img-src {
@@ -277,7 +293,7 @@
   }
 
   .popup__close {
-    right: -20px;
+    right: -30px;
     top: -30px;
   }
 

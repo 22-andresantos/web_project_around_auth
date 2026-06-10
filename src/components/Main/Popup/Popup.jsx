@@ -6,17 +6,17 @@ export default function Popup(props) {
     onClose,
     title,
     children,
-    className = '',
     isImagePopup = false,
+    isTooltipPopup = false,
   } = props;
 
   return createPortal(
     <div className='popup'>
       <div
         className={`
-          popup__content 
-          ${isImagePopup ? 'popup__content_content_image' : ''}
-          ${className}
+          popup__content
+          ${isImagePopup ? 'popup__content_content_image ' : ''}
+          ${isTooltipPopup ? 'popup__content_content_tooltip' : ''}
         `}
       >
         <button onClick={onClose} className='popup__close'>
